@@ -25,7 +25,7 @@ class DomainSpider(CrawlSpider):
             return
 
         if self.allowed_domains[0] in response.url and "articles" in response.url:
-            filename = "pages/" + response.url.split('/')[-1].replace(",", "_").replace("?", "_")
+            filename = self.name + "/" + response.url.split('/')[-1].replace(",", "_").replace("?", "_")
             with open(filename, 'wb') as f:
                 f.write(response.body)
 
