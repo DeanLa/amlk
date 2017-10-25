@@ -1,6 +1,8 @@
 from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 import scrapy
 from scrapy.spiders import CrawlSpider
+from random import shuffle
+
 
 class DomainSpider(CrawlSpider):
     name = "ynet"
@@ -10,7 +12,9 @@ class DomainSpider(CrawlSpider):
     parsed = set()
 
     def parse(self, response):
-        for link in LxmlLinkExtractor(allow=[".*" + self.name + ".*"]).extract_links(response):
+        links = LxmlLinkExtractor(allow=[".*" + self.name + ".*"]).extract_links(response)
+        shuffle(links)
+        for link in links:
             if link not in self.visited:
                 self.visited.add(link)
                 yield scrapy.Request(link.url, callback=self.parse_dir_contents)
@@ -24,8 +28,6 @@ class DomainSpider(CrawlSpider):
             with open(filename, 'wb') as f:
                 f.write(response.body)
 
-        for link in LxmlLinkExtractor(allow=[".*" + self.name + ".*"]).extract_links(response):
-            if link not in self.visited:
-                self.visited.add(link)
-                yield scrapy.Request(link.url, callback=self.parse_dir_contents)
+        # Continue to crawl links
+        self.parse(response)
 
