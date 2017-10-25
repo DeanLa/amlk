@@ -1,0 +1,4 @@
+scrapy runspider CrawlerSpider.py
+
+For less logging - 
+scrapy runspider CrawlerSpider.py -loglevel INFO
