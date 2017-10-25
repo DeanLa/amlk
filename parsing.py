@@ -5,9 +5,7 @@ from bs4 import BeautifulSoup
 
 def get_article(url):
     '''gets link to article and returns the contents'''
-    r = requests.get(url)
-    if r.status_code == 200:
-        return str(r.content)
+
 
 def _parse_mako(html):
     '''gets html from mako and parses the needed text'''
